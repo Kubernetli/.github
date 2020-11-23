@@ -1,2 +1,3 @@
 # .github
-Github Organisation Action Templates
+
+Workflow templates
