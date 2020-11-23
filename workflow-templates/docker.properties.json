@@ -1,0 +1,11 @@
+{
+    "name": "Docker test build & publish",
+    "description": "",
+    "iconName": "example-icon",
+    "categories": [
+        "Docker"
+    ],
+    "filePatterns": [
+        "^Dockerfile"
+    ]
+}
