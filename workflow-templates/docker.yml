@@ -7,9 +7,10 @@ jobs:
     name: Push Docker image to multiple registries
     runs-on: ubuntu-latest
     steps:
-      - uses: Actions-R-Us/default-env@v1
+      - name: Set ENVs
+        if: ! ${{ env.DOCKERFILE }}
         env:
-          DOCKERFILES: './Dockerfile'
+          DOCKERFILE: "./Dockerfile"
       - name: Check out the repo
         uses: actions/checkout@v2
       -
@@ -30,7 +31,7 @@ jobs:
         with:
           Dockerfile: ${{ env.DOCKERFILES }}
           push: true
-          tags: ${{ github.repsotory }}: ${{ github.ref }}
+          tags: ${{ github.repsotory }}:${{ github.ref }}
           tag_with_ref: true
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v1
@@ -38,5 +39,5 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: ${{ github.repsotory }}: ${{ github.ref }} 
+          repository: ${{ github.repsotory }}:${{ github.ref }} 
           tag_with_ref: true
