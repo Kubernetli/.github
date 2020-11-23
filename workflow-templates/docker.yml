@@ -4,7 +4,7 @@ on:
     types: [published]
 jobs:
   push_to_registries:
-    name: Push Docker image to multiple registries
+    name: Build & Push Docker image to multiple registries
     runs-on: ubuntu-latest
     steps:
       - name: Set ENVs
@@ -31,7 +31,7 @@ jobs:
         with:
           Dockerfile: ${{ env.DOCKERFILES }}
           push: true
-          tags: ${{ github.repsotory }}:${{ github.ref }}
+          tags: hub.docker.com/${{ github.repsotory }}:${{ github.ref }}
           tag_with_ref: true
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v1

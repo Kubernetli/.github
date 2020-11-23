@@ -1,0 +1,11 @@
+{
+    "name": "Docker build check",
+    "description": "",
+    "iconName": "example-icon",
+    "categories": [
+        "Docker"
+    ],
+    "filePatterns": [
+        "^Dockerfile"
+    ]
+}
