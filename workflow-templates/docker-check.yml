@@ -1,0 +1,26 @@
+name: Docker Checks
+on: push
+jobs:
+  check_docker:
+    name: Check Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set ENVs
+        run: echo "Tags are > ${DOCKERFILE}"
+        env:
+          DOCKERFILE: "./Dockerfile"
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and Push to Docker Hub
+        id: dockerhub_build
+        uses: docker/build-push-action@v2 
+        with:
+          file: ${{ env.DOCKERFILES }}
+          tags: 1

@@ -3,6 +3,7 @@ on:
   release:
     types: [published]
 jobs:
+
   push_to_registries_hub:
     name: Build & Publish Docker Hub
     runs-on: ubuntu-latest
@@ -35,6 +36,7 @@ jobs:
         with:
           file: ${{ env.DOCKERFILES }}
           push: true
+
           tags: ${{ github.repository }}:${{ steps.get_tag_name.outputs.VERSION }}
   push_to_registries_github:
     name: Build & Publish Docker Github
