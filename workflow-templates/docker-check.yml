@@ -1,8 +1,8 @@
 name: Docker Checks
-on: push
+on: pull_request
 jobs:
   check_docker:
-    name: Check Build
+    name: Check Docker Build
     runs-on: ubuntu-latest
     steps:
       - name: Set ENVs
@@ -20,7 +20,21 @@ jobs:
 
       - name: Build and Push to Docker Hub
         id: dockerhub_build
-        uses: docker/build-push-action@v2 
+        uses: docker/build-push-action@v2
         with:
           file: ${{ env.DOCKERFILES }}
-          tags: 1
+          tags: audit
+
+      - name: Install Dockle
+        run: |
+          DOCKLE_VERSION=$(
+            curl --silent "https://api.github.com/repos/goodwithtech/dockle/releases/latest" | \
+            grep '"tag_name":' | \
+            sed -E 's/.*"v([^"]+)".*/\1/' \
+          );
+          curl -L -s -o "dockle_${DOCKLE_VERSION}_Linux-64bit.tar.gz" https://github.com/goodwithtech/dockle/releases/download/v${DOCKLE_VERSION}/dockle_${DOCKLE_VERSION}_Linux-64bit.tar.gz
+          tar -xzvf dockle_${DOCKLE_VERSION}_Linux-64bit.tar.gz > /dev/null && mv dockle /usr/local/bin/ && chmod +x /usr/local/bin/dockle
+
+      - name: Audit image
+        run: |
+         dockle --exit-code 1 --exit-level FATAL audit
